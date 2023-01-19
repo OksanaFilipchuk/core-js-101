@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(str1, str2) {
   return str1 + str2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -68,7 +66,6 @@ function getStringFromTemplate(firstName, lastName) {
 function extractNameFromTemplate(value) {
   return value.slice(7, -1);
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -145,7 +142,6 @@ function unbracketTag(str) {
   return str.slice(1, -1);
 }
 
-
 /**
  * Converts all characters of the specified string into the upper case
  *
@@ -176,20 +172,21 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-  const arr = [];
-  let i = -1;
-  while (i < str.length) {
-    const index = str.indexOf(';', i + 1);
-    if (index === -1) {
-      arr.push(str.slice(i + 1));
-      break;
-    } else {
-      arr.push(str.slice(i + 1, index));
-      i = index;
-    }
-  }
+  return [...str.split(';')];
+  // const arr = [];
+  // let i = -1;
+  // while (i < str.length) {
+  //   const index = str.indexOf(';', i + 1);
+  //   if (index === -1) {
+  //     arr.push(str.slice(i + 1));
+  //     break;
+  //   } else {
+  //     arr.push(str.slice(i + 1, index));
+  //     i = index;
+  //   }
+  // }
 
-  return arr;
+  // return arr;
 }
 
 /**
@@ -215,10 +212,34 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
+function getRectangleString(a, b) {
+  let first = '';
+  let middle = '';
+  let last = '';
+  let result = '';
+  for (let i = 1; i <= b; i += 1) {
+    switch (i) {
+      case 1:
+        first = '┌';
+        middle = '─';
+        last = '┐';
+        break;
+      case b:
+        first = '└';
+        middle = '─';
+        last = '┘';
+        break;
+      default:
+        first = '│';
+        middle = ' ';
+        last = '│';
+        break;
+    }
+    const str = `${first + middle.repeat(a - 2) + last}\n`;
+    result += str;
+  }
+  return result;
 }
-
 
 /**
  * Encode specified string with ROT13 cipher
@@ -236,8 +257,16 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const alphabet = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'];
+  const encode = [...'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'];
+  return [...str]
+    .map((char) => {
+      const index = alphabet.indexOf(char);
+      const encodeChar = index >= 0 ? encode[index] : char;
+      return encodeChar;
+    })
+    .join('');
 }
 
 /**
@@ -253,10 +282,15 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(v) {
+  let result;
+  if (v) {
+    result = Object.getPrototypeOf(v) === Object.getPrototypeOf(String(''));
+  } else {
+    result = false;
+  }
+  return result;
 }
-
 
 /**
  * Returns playid card id.
@@ -282,10 +316,31 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
+function getCardId(value) {
+  const arr = [
+    'A',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '10',
+    'J',
+    'Q',
+    'K',
+  ];
+  const suits = ['♣', '♦', '♥', '♠'];
+  const allCards = [];
+  suits.forEach((el) => {
+    arr.forEach((elem) => {
+      allCards.push(elem + el);
+    });
+  });
+  return allCards.indexOf(value);
 }
-
 
 module.exports = {
   concatenateStrings,
