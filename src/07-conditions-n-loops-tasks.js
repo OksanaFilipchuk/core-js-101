@@ -387,8 +387,6 @@ function getMatrixProduct(m1, m2) {
   for (let i = 0; i <= m1.length; i += 1) {
     const line = [];
     for (let j = 0; j < m2[0].length; j += 1) {
-      console.log(m1[i]);
-      console.log(m2[j][i]);
       const char = m1[i].reduce((a, b) => a + b * m2[j][i], 0);
       line.push(char);
     }
