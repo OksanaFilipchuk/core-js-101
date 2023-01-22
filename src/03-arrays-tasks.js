@@ -235,18 +235,10 @@ function toArrayOfSquares(arr) {
  *   [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ] => [ 1, 3, 6, 10, 15, 21, 28, 36, 45, 55 ]
  */
 function getMovingSum(arr) {
-  const result = [];
-  arr.forEach((el, index) => {
-    if (index === 0) {
-      result.push(el);
-    } else {
-      result.push(result[result.length - 1] + el);
-    }
-  });
-  return result;
-  // const arr1 = [...Array(arr.len)];
-  // eslint-disable-next-line max-len
-  // return arr1.map((elem, index) => (index === 0 ? elem : arr.slice(0, index).reduce((a, b) => a + b, 0)));
+  return arr.reduce(
+    (a, b, i) => [...a, arr.reduce((c, d, ind) => (ind <= i ? c + d : c), 0)],
+    []
+  );
 }
 
 /**
@@ -285,17 +277,7 @@ function getSecondItems(arr) {
  *  [ 1,2,3,4,5 ] => [ 1, 2,2, 3,3,3, 4,4,4,4, 5,5,5,5,5 ]
  */
 function propagateItemsByPositionIndex(arr) {
-  return arr
-    .map(
-      (el, index) =>
-        // eslint-disable-next-line implicit-arrow-linebreak
-        Array(index + 1)
-          .fill(el)
-          .join('')
-      // eslint-disable-next-line function-paren-newline
-    )
-    .join('')
-    .split('');
+  return arr.reduce((a, item, i) => [...a, ...Array(i + 1).fill(item)], []);
 }
 
 /**
