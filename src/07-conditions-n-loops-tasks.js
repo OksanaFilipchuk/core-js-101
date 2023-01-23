@@ -124,8 +124,26 @@ function isTriangle(a, b, c) {
  *   { top:20, left:20, width: 20, height: 20 }    =>  false
  *
  */
-function doRectanglesOverlap(/* rect1, rect2 */) {
-  throw new Error('Not implemented');
+function doRectanglesOverlap(rectan1, rectan2) {
+  function isOverlap(rect1, rect2) {
+    const rect1Right = rect1.left + rect1.width;
+    const rect2Right = rect2.left + rect2.width;
+    const rect1Bottom = rect1.top + rect1.height;
+    const rect2Bottom = rect2.top + rect2.height;
+
+    // const isLeftInside = rect2.left > rect1.left && rect2.left < rect1Right;
+    // const isRightInside = rect2Right < rect1Right && rect2Right > rect1.left;
+    // const isTopInside = rect2.top > rect1.top && rect2.top < rect1Bottom;
+    // const isBottomInside = rect2Bottom < rect1Bottom && rect2Bottom > rect1.top;
+    // return (isRightInside || isLeftInside) && (isBottomInside || isTopInside);
+    return (
+      rect1.left < rect2Right
+      && rect1Right > rect2.left
+      && rect1.top < rect2Bottom
+      && rect1Bottom > rect2.top
+    );
+  }
+  return isOverlap(rectan2, rectan1) || isOverlap(rectan1, rectan2);
 }
 
 /**
@@ -214,7 +232,10 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
   };
   const startBrack = isStartIncluded ? brackets.true[0] : brackets.false[0];
   const lastBrack = isEndIncluded ? brackets.true[1] : brackets.false[1];
-  const result = `${startBrack}${Math.min(a, b)}, ${Math.max(a, b)}${lastBrack}`;
+  const result = `${startBrack}${Math.min(a, b)}, ${Math.max(
+    a,
+    b,
+  )}${lastBrack}`;
   return result;
 }
 
