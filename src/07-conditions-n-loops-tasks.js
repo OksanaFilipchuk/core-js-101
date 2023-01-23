@@ -290,8 +290,21 @@ function reverseInteger(num) {
  *   5436468789016589 => false
  *   4916123456789012 => false
  */
-function isCreditCardNumber(/* ccn */) {
-  throw new Error('Not implemented');
+function isCreditCardNumber(ccn) {
+  const givenLastDig = +[...ccn.toString()].slice(-1)[0];
+  let digitArr = [...ccn.toString()].slice(0, -1);
+  const isLenghtEven = digitArr.length % 2 === 0;
+  if (isLenghtEven) {
+    digitArr = digitArr.map((el, i) => (i % 2 === 0 ? el : +el * 2));
+  } else {
+    digitArr = digitArr.map((el, i) => (i % 2 === 0 ? +el * 2 : +el));
+  }
+  digitArr = digitArr
+    .map((el) => el.toString())
+    .map((el) => (el.length > 1 ? +el[0] + +el[1] : +el));
+  const sum = digitArr.reduce((a, b) => a + b, 0);
+  const checkDigit = (10 - (sum % 10)) % 10;
+  return checkDigit === givenLastDig;
 }
 
 /**
@@ -334,8 +347,44 @@ function getDigitalRoot(num) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  // const brackets = {
+  //   '[': ']',
+  //   '{': '}',
+  //   '<': '>',
+  //   '(': ')',
+  // };
+  // let arr = [];
+  // [...str].forEach((el) => {
+  //   if (Object.keys(brackets).includes(el)) {
+  //     arr.push(el);
+  //   } else if (
+  //     Object.values(brackets).includes(el)
+  //     && brackets[arr[arr.length - 1]] === el
+  //   ) {
+  //     arr = arr.slice(0, -1);
+  //   }
+  // });
+  // return arr.length === 0;
+  const brackets = {
+    ']': '[',
+    '}': '{',
+    ')': '(',
+    '>': '<',
+  };
+  const arr = [];
+
+  // eslint-disable-next-line no-restricted-syntax
+  for (const bracket of str) {
+    if (!brackets[bracket]) {
+      arr.push(bracket);
+    } else if (arr[arr.length - 1] === brackets[bracket]) {
+      arr.pop();
+    } else {
+      return false;
+    }
+  }
+  return arr.length === 0;
 }
 
 /**
@@ -404,14 +453,25 @@ function getCommonDirectoryPath(/* pathes */) {
  *
  */
 function getMatrixProduct(m1, m2) {
+  // const arr = [];
+  // for (let i = 0; i <= m1.length; i += 1) {
+  //   const line = [];
+  //   for (let j = 0; j < m2[0].length; j += 1) {
+  //     const char = m1[i].reduce((a, b) => a + b * m2[j][i], 0);
+  //     line.push(char);
+  //   }
+  //   arr.push(line);
+  // }
+  // return arr;
   const arr = [];
-  for (let i = 0; i <= m1.length; i += 1) {
-    const line = [];
-    for (let j = 0; j < m2[0].length; j += 1) {
-      const char = m1[i].reduce((a, b) => a + b * m2[j][i], 0);
-      line.push(char);
+  for (let i = 0; i < m1.length; i += 1) {
+    arr[i] = [];
+    for (let j = 0; j < m1.length; j += 1) {
+      arr[i][j] = 0;
+      for (let k = 0; k < m2.length; k += 1) {
+        arr[i][j] += m1[i][k] * m2[k][j];
+      }
     }
-    arr.push(line);
   }
   return arr;
 }

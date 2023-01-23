@@ -180,13 +180,17 @@ function partialUsingArguments(fn, ...args1) {
  *   getId10() => 11
  */
 function getIdGeneratorFunction(startFrom) {
-  function* idGeneratorFunction() {
-    yield startFrom;
-  }
-  return function getNext() {
-    const generator = idGeneratorFunction();
-    return generator.next();
+  return function newFunk() {
+    // eslint-disable-next-line no-return-assign, no-param-reassign
+    return (startFrom += 1);
   };
+  // function* idGeneratorFunction() {
+  //   yield startFrom;
+  // }
+  // return function getNext() {
+  //   const generator = idGeneratorFunction();
+  //   return generator.next().value;
+  // };
 }
 
 module.exports = {
